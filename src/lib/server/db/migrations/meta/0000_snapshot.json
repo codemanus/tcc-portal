@@ -1,0 +1,1341 @@
+{
+  "id": "998c3798-ff3f-4954-bc99-4e41cf227a52",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.assignment": {
+      "name": "assignment",
+      "schema": "",
+      "columns": {
+        "sys_id": {
+          "name": "sys_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "assignment_name": {
+          "name": "assignment_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "assignment_desc": {
+          "name": "assignment_desc",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "assignment_type": {
+          "name": "assignment_type",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "assignment_due_by": {
+          "name": "assignment_due_by",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "assignment_grade_id": {
+          "name": "assignment_grade_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "assignment_created_at": {
+          "name": "assignment_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "assignment_updated_at": {
+          "name": "assignment_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "assignment_submitted_by": {
+          "name": "assignment_submitted_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "assignment_submitted_at": {
+          "name": "assignment_submitted_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "assignment_created_by": {
+          "name": "assignment_created_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "assignment_updated_by": {
+          "name": "assignment_updated_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "assignment_assignment_type_assignment_type_sys_id_fk": {
+          "name": "assignment_assignment_type_assignment_type_sys_id_fk",
+          "tableFrom": "assignment",
+          "tableTo": "assignment_type",
+          "columnsFrom": [
+            "assignment_type"
+          ],
+          "columnsTo": [
+            "sys_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "assignment_assignment_grade_id_grade_sys_id_fk": {
+          "name": "assignment_assignment_grade_id_grade_sys_id_fk",
+          "tableFrom": "assignment",
+          "tableTo": "grade",
+          "columnsFrom": [
+            "assignment_grade_id"
+          ],
+          "columnsTo": [
+            "sys_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "assignment_assignment_submitted_by_student_sys_id_fk": {
+          "name": "assignment_assignment_submitted_by_student_sys_id_fk",
+          "tableFrom": "assignment",
+          "tableTo": "student",
+          "columnsFrom": [
+            "assignment_submitted_by"
+          ],
+          "columnsTo": [
+            "sys_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "assignment_assignment_updated_by_staff_sys_id_fk": {
+          "name": "assignment_assignment_updated_by_staff_sys_id_fk",
+          "tableFrom": "assignment",
+          "tableTo": "staff",
+          "columnsFrom": [
+            "assignment_updated_by"
+          ],
+          "columnsTo": [
+            "sys_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "assignment_sys_id_unique": {
+          "name": "assignment_sys_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "sys_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.assignment_type": {
+      "name": "assignment_type",
+      "schema": "",
+      "columns": {
+        "sys_id": {
+          "name": "sys_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "assignment_type_name": {
+          "name": "assignment_type_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "assignment_type_desc": {
+          "name": "assignment_type_desc",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "assignment_type_created_at": {
+          "name": "assignment_type_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "assignment_type_updated_at": {
+          "name": "assignment_type_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "assignment_type_created_by": {
+          "name": "assignment_type_created_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "assignment_type_updated_by": {
+          "name": "assignment_type_updated_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "assignment_type_assignment_type_updated_by_staff_sys_id_fk": {
+          "name": "assignment_type_assignment_type_updated_by_staff_sys_id_fk",
+          "tableFrom": "assignment_type",
+          "tableTo": "staff",
+          "columnsFrom": [
+            "assignment_type_updated_by"
+          ],
+          "columnsTo": [
+            "sys_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "assignment_type_sys_id_unique": {
+          "name": "assignment_type_sys_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "sys_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.course": {
+      "name": "course",
+      "schema": "",
+      "columns": {
+        "sys_id": {
+          "name": "sys_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "course_name": {
+          "name": "course_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "course_code": {
+          "name": "course_code",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "course_credit": {
+          "name": "course_credit",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "course_desc": {
+          "name": "course_desc",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "course_schedule": {
+          "name": "course_schedule",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "course_schoolyear": {
+          "name": "course_schoolyear",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "course_instructor_id": {
+          "name": "course_instructor_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "course_assignments_id": {
+          "name": "course_assignments_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "course_created_at": {
+          "name": "course_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "course_updated_at": {
+          "name": "course_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "course_created_by": {
+          "name": "course_created_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "course_updated_by": {
+          "name": "course_updated_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "course_course_schedule_course_schedule_sys_id_fk": {
+          "name": "course_course_schedule_course_schedule_sys_id_fk",
+          "tableFrom": "course",
+          "tableTo": "course_schedule",
+          "columnsFrom": [
+            "course_schedule"
+          ],
+          "columnsTo": [
+            "sys_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "course_course_instructor_id_staff_sys_id_fk": {
+          "name": "course_course_instructor_id_staff_sys_id_fk",
+          "tableFrom": "course",
+          "tableTo": "staff",
+          "columnsFrom": [
+            "course_instructor_id"
+          ],
+          "columnsTo": [
+            "sys_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "course_course_assignments_id_assignment_sys_id_fk": {
+          "name": "course_course_assignments_id_assignment_sys_id_fk",
+          "tableFrom": "course",
+          "tableTo": "assignment",
+          "columnsFrom": [
+            "course_assignments_id"
+          ],
+          "columnsTo": [
+            "sys_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "course_course_updated_by_staff_sys_id_fk": {
+          "name": "course_course_updated_by_staff_sys_id_fk",
+          "tableFrom": "course",
+          "tableTo": "staff",
+          "columnsFrom": [
+            "course_updated_by"
+          ],
+          "columnsTo": [
+            "sys_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "course_sys_id_unique": {
+          "name": "course_sys_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "sys_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.course_schedule": {
+      "name": "course_schedule",
+      "schema": "",
+      "columns": {
+        "sys_id": {
+          "name": "sys_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "course_code": {
+          "name": "course_code",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "course_offered_fall": {
+          "name": "course_offered_fall",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "course_offered_spring": {
+          "name": "course_offered_spring",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "course_offered_summer": {
+          "name": "course_offered_summer",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "course_offered_winter": {
+          "name": "course_offered_winter",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "course_created_at": {
+          "name": "course_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "course_updated_at": {
+          "name": "course_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "course_created_by": {
+          "name": "course_created_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "course_updated_by": {
+          "name": "course_updated_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "course_schedule_course_updated_by_staff_sys_id_fk": {
+          "name": "course_schedule_course_updated_by_staff_sys_id_fk",
+          "tableFrom": "course_schedule",
+          "tableTo": "staff",
+          "columnsFrom": [
+            "course_updated_by"
+          ],
+          "columnsTo": [
+            "sys_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "course_schedule_sys_id_unique": {
+          "name": "course_schedule_sys_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "sys_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.enrollment": {
+      "name": "enrollment",
+      "schema": "",
+      "columns": {
+        "sys_id": {
+          "name": "sys_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "enrollment_schoolyear": {
+          "name": "enrollment_schoolyear",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "enrollment_courses": {
+          "name": "enrollment_courses",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "enrollment_is_active": {
+          "name": "enrollment_is_active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "enrollment_created_at": {
+          "name": "enrollment_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "enrollment_updated_at": {
+          "name": "enrollment_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "enrollment_created_by": {
+          "name": "enrollment_created_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "enrollment_update_by": {
+          "name": "enrollment_update_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "enrollment_enrollment_update_by_student_sys_id_fk": {
+          "name": "enrollment_enrollment_update_by_student_sys_id_fk",
+          "tableFrom": "enrollment",
+          "tableTo": "student",
+          "columnsFrom": [
+            "enrollment_update_by"
+          ],
+          "columnsTo": [
+            "sys_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "enrollment_sys_id_unique": {
+          "name": "enrollment_sys_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "sys_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.enrollment_course": {
+      "name": "enrollment_course",
+      "schema": "",
+      "columns": {
+        "sys_id": {
+          "name": "sys_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "course_id": {
+          "name": "course_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "enrollment_id": {
+          "name": "enrollment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "enrollment_course_course_id_course_sys_id_fk": {
+          "name": "enrollment_course_course_id_course_sys_id_fk",
+          "tableFrom": "enrollment_course",
+          "tableTo": "course",
+          "columnsFrom": [
+            "course_id"
+          ],
+          "columnsTo": [
+            "sys_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "enrollment_course_enrollment_id_enrollment_sys_id_fk": {
+          "name": "enrollment_course_enrollment_id_enrollment_sys_id_fk",
+          "tableFrom": "enrollment_course",
+          "tableTo": "enrollment",
+          "columnsFrom": [
+            "enrollment_id"
+          ],
+          "columnsTo": [
+            "sys_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "enrollment_course_sys_id_unique": {
+          "name": "enrollment_course_sys_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "sys_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.grade": {
+      "name": "grade",
+      "schema": "",
+      "columns": {
+        "sys_id": {
+          "name": "sys_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "grade_assignment_id": {
+          "name": "grade_assignment_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "grade_result_total": {
+          "name": "grade_result_total",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "grade_result_value": {
+          "name": "grade_result_value",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "grade_feedback": {
+          "name": "grade_feedback",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "grade_student_id": {
+          "name": "grade_student_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "grade_by_instructor_id": {
+          "name": "grade_by_instructor_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "grade_grade_feedback_grade_feedback_sys_id_fk": {
+          "name": "grade_grade_feedback_grade_feedback_sys_id_fk",
+          "tableFrom": "grade",
+          "tableTo": "grade_feedback",
+          "columnsFrom": [
+            "grade_feedback"
+          ],
+          "columnsTo": [
+            "sys_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "grade_grade_student_id_student_sys_id_fk": {
+          "name": "grade_grade_student_id_student_sys_id_fk",
+          "tableFrom": "grade",
+          "tableTo": "student",
+          "columnsFrom": [
+            "grade_student_id"
+          ],
+          "columnsTo": [
+            "sys_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "grade_grade_by_instructor_id_staff_sys_id_fk": {
+          "name": "grade_grade_by_instructor_id_staff_sys_id_fk",
+          "tableFrom": "grade",
+          "tableTo": "staff",
+          "columnsFrom": [
+            "grade_by_instructor_id"
+          ],
+          "columnsTo": [
+            "sys_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "grade_sys_id_unique": {
+          "name": "grade_sys_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "sys_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.grade_feedback": {
+      "name": "grade_feedback",
+      "schema": "",
+      "columns": {
+        "sys_id": {
+          "name": "sys_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "grade_feedback_strengths": {
+          "name": "grade_feedback_strengths",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "grade_feedback_improvements": {
+          "name": "grade_feedback_improvements",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "grade_feedback_comments": {
+          "name": "grade_feedback_comments",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "grade_feedback_created_at": {
+          "name": "grade_feedback_created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "grade_feedback_updated_at": {
+          "name": "grade_feedback_updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "grade_feedback_submitted_by": {
+          "name": "grade_feedback_submitted_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "grade_feedback_submitted_at": {
+          "name": "grade_feedback_submitted_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "grade_feedback_created_by": {
+          "name": "grade_feedback_created_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "grade_feedback_updated_by": {
+          "name": "grade_feedback_updated_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "grade_feedback_grade_feedback_submitted_by_staff_sys_id_fk": {
+          "name": "grade_feedback_grade_feedback_submitted_by_staff_sys_id_fk",
+          "tableFrom": "grade_feedback",
+          "tableTo": "staff",
+          "columnsFrom": [
+            "grade_feedback_submitted_by"
+          ],
+          "columnsTo": [
+            "sys_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "grade_feedback_grade_feedback_updated_by_staff_sys_id_fk": {
+          "name": "grade_feedback_grade_feedback_updated_by_staff_sys_id_fk",
+          "tableFrom": "grade_feedback",
+          "tableTo": "staff",
+          "columnsFrom": [
+            "grade_feedback_updated_by"
+          ],
+          "columnsTo": [
+            "sys_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "grade_feedback_sys_id_unique": {
+          "name": "grade_feedback_sys_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "sys_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.staff": {
+      "name": "staff",
+      "schema": "",
+      "columns": {
+        "sys_id": {
+          "name": "sys_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "stff_number": {
+          "name": "stff_number",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "staff_email": {
+          "name": "staff_email",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "staff_password": {
+          "name": "staff_password",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "staff_first_name": {
+          "name": "staff_first_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "staff_last_name": {
+          "name": "staff_last_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "staff_dateOfBirth": {
+          "name": "staff_dateOfBirth",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "staff_sex": {
+          "name": "staff_sex",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "staff_address_1": {
+          "name": "staff_address_1",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "staff_address_2": {
+          "name": "staff_address_2",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "staff_address_city": {
+          "name": "staff_address_city",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "staff_address_zip": {
+          "name": "staff_address_zip",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "staff_primary_phone": {
+          "name": "staff_primary_phone",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "staff_role_id": {
+          "name": "staff_role_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "staff_is_active": {
+          "name": "staff_is_active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": true
+        },
+        "staff_created_at": {
+          "name": "staff_created_at",
+          "type": "timestamp (6) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "staff_updated_at": {
+          "name": "staff_updated_at",
+          "type": "timestamp (6) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "staff_created_by": {
+          "name": "staff_created_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "staff_updated_by": {
+          "name": "staff_updated_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "staff_staff_role_id_user_role_role_id_fk": {
+          "name": "staff_staff_role_id_user_role_role_id_fk",
+          "tableFrom": "staff",
+          "tableTo": "user_role",
+          "columnsFrom": [
+            "staff_role_id"
+          ],
+          "columnsTo": [
+            "role_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "staff_sys_id_unique": {
+          "name": "staff_sys_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "sys_id"
+          ]
+        },
+        "staff_staff_email_unique": {
+          "name": "staff_staff_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "staff_email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.student": {
+      "name": "student",
+      "schema": "",
+      "columns": {
+        "sys_id": {
+          "name": "sys_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "student_number": {
+          "name": "student_number",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_email": {
+          "name": "student_email",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_password": {
+          "name": "student_password",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_first_name": {
+          "name": "student_first_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_last_name": {
+          "name": "student_last_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_dateOfBirth": {
+          "name": "student_dateOfBirth",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_sex": {
+          "name": "student_sex",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_address_1": {
+          "name": "student_address_1",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_address_2": {
+          "name": "student_address_2",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "student_address_city": {
+          "name": "student_address_city",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_address_zip": {
+          "name": "student_address_zip",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_primary_phone": {
+          "name": "student_primary_phone",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_created_at": {
+          "name": "student_created_at",
+          "type": "timestamp (6) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "student_updated_at": {
+          "name": "student_updated_at",
+          "type": "timestamp (6) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "student_created_by": {
+          "name": "student_created_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "student_updated_by": {
+          "name": "student_updated_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "student_sys_id_unique": {
+          "name": "student_sys_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "sys_id"
+          ]
+        },
+        "student_student_email_unique": {
+          "name": "student_student_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "student_email"
+          ]
+        },
+        "student_student_password_unique": {
+          "name": "student_student_password_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "student_password"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.user_role": {
+      "name": "user_role",
+      "schema": "",
+      "columns": {
+        "role_id": {
+          "name": "role_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "role_name": {
+          "name": "role_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "role_description": {
+          "name": "role_description",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "role_created_at": {
+          "name": "role_created_at",
+          "type": "timestamp (6) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "role_updated_at": {
+          "name": "role_updated_at",
+          "type": "timestamp (6) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "role_updated_by": {
+          "name": "role_updated_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "role_created_by": {
+          "name": "role_created_by",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "user_role_role_id_unique": {
+          "name": "user_role_role_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "role_id"
+          ]
+        },
+        "user_role_role_name_unique": {
+          "name": "user_role_role_name_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "role_name"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "username": {
+          "name": "username",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "profile_image": {
+          "name": "profile_image",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "role": {
+          "name": "role",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp (6) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp (6) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "users_id_users_id_fk": {
+          "name": "users_id_users_id_fk",
+          "tableFrom": "users",
+          "tableTo": "users",
+          "schemaTo": "auth",
+          "columnsFrom": [
+            "id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "users_id_fkey": {
+          "name": "users_id_fkey",
+          "tableFrom": "users",
+          "tableTo": "users",
+          "schemaTo": "auth",
+          "columnsFrom": [
+            "id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "users_id_unique": {
+          "name": "users_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "policies": {
+        "authenticated can view all users": {
+          "name": "authenticated can view all users",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "authenticated"
+          ],
+          "using": "true"
+        }
+      },
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
