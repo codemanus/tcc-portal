@@ -1,8 +1,6 @@
 import { pgTable, uuid, varchar, boolean, timestamp } from "drizzle-orm/pg-core"
 import { course } from "./course";
-import { student } from "./student";
-import { seed } from "drizzle-seed";
-import { drizzle } from 'drizzle-orm/postgres-js';
+import { resident } from "./student";
 import { sql } from "drizzle-orm";
 
 export const enrollment = pgTable('enrollment', {
@@ -13,7 +11,7 @@ export const enrollment = pgTable('enrollment', {
     enrollment_created_at: timestamp('enrollment_created_at').defaultNow(),
     enrollment_updated_at: timestamp('enrollment_updated_at').defaultNow(),
     enrollment_created_by: uuid('enrollment_created_by'),
-    enrollment_update_by: uuid('enrollment_update_by').references(() => student.sys_id)
+    enrollment_update_by: uuid('enrollment_update_by').references(() => resident.sys_id)
   });
 
 export const enrollment_course = pgTable('enrollment_course', {
@@ -21,9 +19,3 @@ export const enrollment_course = pgTable('enrollment_course', {
     course_id: uuid('course_id').notNull().references(() => course.sys_id),
     enrollment_id: uuid('enrollment_id').notNull().references(() => enrollment.sys_id)
   });
-
-// async function main() {
-//   const db = drizzle(process.env.DATABASE_URL!);
-//   await seed(db, { enrollment, enrollment_course });
-// }
-// main();

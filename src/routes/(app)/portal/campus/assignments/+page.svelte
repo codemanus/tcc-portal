@@ -4,8 +4,12 @@
 	import { Button } from '$lib/components/ui/button';
 	import { ChevronRight } from 'lucide-svelte';
 	import { setBreadcrumbs } from '$lib/stores/breadcrumb';
+	import { type DateValue, CalendarDate } from '@internationalized/date';
+	import AssignmentForm from '$lib/components/AssignmentForm.svelte';
+	import { usePermissions } from '$lib/hooks/use-permissions';
 
 	let { data }: { data: PageData } = $props();
+	const { can } = usePermissions(data.user);
 
 	// Set breadcrumbs for this page
 	setBreadcrumbs([{ label: 'Campus', href: '/portal/campus' }, { label: 'Assignments' }]);
@@ -23,6 +27,9 @@
 	function getStatusColor(status: string) {
 		return statusColors[status.toLowerCase() as keyof typeof statusColors] || statusColors.default;
 	}
+
+	let selectedDate: CalendarDate | undefined;
+	let placeholder: DateValue | undefined;
 </script>
 
 <div class="flex flex-1 flex-col gap-4 p-4">
@@ -62,7 +69,12 @@
 		</StatCard>
 
 		<div class="aspect-video rounded-xl bg-muted/50 shadow-md">
-			<AssignmentsCalendar />
+			<AssignmentsCalendar
+				type="single"
+				value={selectedDate}
+				placeholder={placeholder}
+				weekdayFormat="narrow"
+			/>
 		</div>
 	</section>
 

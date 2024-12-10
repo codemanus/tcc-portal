@@ -1,7 +1,5 @@
 import { timestamp, uuid, pgTable, serial, varchar, date, boolean } from "drizzle-orm/pg-core";
 import { user_role } from "./user-roles";
-import { seed } from "drizzle-seed";
-import { drizzle } from 'drizzle-orm/postgres-js';
 import { sql } from "drizzle-orm";
 import { users } from "./users";
 
@@ -28,8 +26,3 @@ export const staff = pgTable('staff', {
     staff_updated_by: uuid('staff_updated_by').notNull(),
 });
 
-// async function main() {
-//   const db = drizzle(process.env.DATABASE_URL!);
-//   await seed(db, { staff });
-// }
-// main();

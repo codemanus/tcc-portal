@@ -1,22 +1,12 @@
 import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ locals }) => {
-	const session = await locals.safeGetSession();
-
-	if (session.user) {
-		throw redirect(303, '/portal');
-	}
-	else {
-		throw redirect(303, '/login');
-	}
+export const load: PageServerLoad = async () => {
+	// Simply redirect to login, let the portal layout handle auth checks
+	throw redirect(303, '/login');
 };
 
 export const actions = {
-	login: async ({ request, locals }) => {
-		// Your existing login logic
-	},
-
 	logout: async ({ locals }) => {
 		const { error } = await locals.supabase.auth.signOut();
 
@@ -24,6 +14,6 @@ export const actions = {
 			console.error('Error logging out:', error);
 		}
 
-		throw redirect(303, '/');
+		throw redirect(303, '/?logged_out=true');
 	}
 } satisfies Actions;

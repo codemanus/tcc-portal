@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1733591690924,
-      "tag": "0000_daffy_grim_reaper",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1733598742197,
-      "tag": "0001_funny_freak",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1733599320465,
-      "tag": "0002_cooing_bug",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1733600152094,
-      "tag": "0004_outgoing_doctor_strange",
+      "when": 1733741886772,
+      "tag": "0000_handy_ted_forrester",
       "breakpoints": true
     }
   ]

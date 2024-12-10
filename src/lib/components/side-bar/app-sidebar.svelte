@@ -11,37 +11,27 @@
 	import FileCheck from 'lucide-svelte/icons/file-check';
 	import HeartHandshake from 'lucide-svelte/icons/heart-handshake';
 
-	const data = {
-		user: {
-			name: 'Cody Chambers',
-			email: 'corkycodeman@proton.me',
-			avatar: '/avatar/profile-pic.jpg'
-		},
-		navMain: [
+	function getNavigationItems(session: { user?: { permissions?: string[] } } | null) {
+		const userPermissions = session?.user?.permissions || [];
+		
+		const baseNavItems = [
 			{
 				title: 'Care',
 				url: '#',
 				icon: HeartHandshake,
 				isActive: true,
+				requiredPermission: 'VIEW_CARE',
 				items: [
-					{
-						title: 'Things to do',
-						url: '#'
-					},
-					{
-						title: 'Prayer',
-						url: '#'
-					},
-					{
-						title: 'Settings',
-						url: '#'
-					}
+					{ title: 'Things to do', url: '#' },
+					{ title: 'Prayer', url: '#' },
+					{ title: 'Settings', url: '#' }
 				]
 			},
 			{
 				title: 'Kids',
 				url: '#',
 				icon: Baby,
+				requiredPermission: 'VIEW_KIDS',
 				items: [
 					{
 						title: 'Things to do',
@@ -149,46 +139,69 @@
 					}
 				]
 			}
-		],
-		navSecondary: [
+		];
+
+		const campusItems = [
 			{
-				title: 'Support',
-				url: '#',
-				icon: LifeBuoy
+				name: 'Instructor Dashboard',
+				url: '/portal/campus/dashboard',
+				icon: School,
+				requiredPermission: 'VIEW_INSTRUCTOR_DASHBOARD'
 			},
-			{
-				title: 'Feedback',
-				url: '#',
-				icon: Send
-			}
-		],
-		projects: [
 			{
 				name: 'Campus Board',
 				url: '/portal/campus/board',
-				icon: School
+				icon: School,
+				requiredPermission: 'VIEW_CAMPUS_BOARD'
 			},
 			{
 				name: 'Assignments',
 				url: '/portal/campus/assignments',
-				icon: Paperclip
+				icon: Paperclip,
+				requiredPermission: 'VIEW_ASSIGNMENTS'
 			},
 			{
 				name: 'Grades',
 				url: '/portal/campus/grades',
-				icon: FileCheck
+				icon: FileCheck,
+				requiredPermission: 'VIEW_GRADES'
 			}
-		]
-	};
+		];
+
+		const filteredNavItems = baseNavItems.filter(
+			item => !item.requiredPermission || userPermissions.includes(item.requiredPermission)
+		);
+
+		const filteredProjects = campusItems.filter(
+			item => !item.requiredPermission || userPermissions.includes(item.requiredPermission)
+		);
+
+		return {
+			navMain: filteredNavItems,
+			navSecondary: [
+				{
+					title: 'Support',
+					url: '#',
+					icon: LifeBuoy
+				},
+				{
+					title: 'Feedback',
+					url: '#',
+					icon: Send
+				}
+			],
+			projects: filteredProjects
+		};
+	}
 </script>
 
 <script lang="ts">
+	import type { ComponentProps } from 'svelte';
 	import NavMain from '$lib/components/side-bar/nav-main.svelte';
 	import NavProjects from '$lib/components/side-bar/nav-projects.svelte';
 	import NavSecondary from '$lib/components/side-bar/nav-secondary.svelte';
 	import NavUser from '$lib/components/side-bar/nav-user.svelte';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
-	import type { ComponentProps } from 'svelte';
 
 	let {
 		ref = $bindable(null),
@@ -196,13 +209,16 @@
 		...restProps
 	}: ComponentProps<typeof Sidebar.Root> & {
 		session: {
-			user: {
+			user?: {
 				name?: string;
 				email: string;
 				picture?: string;
+				permissions?: string[];
 			};
-		};
+		} | null;
 	} = $props();
+
+	const navigationData = $derived(getNavigationItems(session));
 </script>
 
 <Sidebar.Root bind:ref variant="inset" {...restProps} class="bg-muted/50 shadow-md">
@@ -226,7 +242,7 @@
 		</Sidebar.Menu>
 	</Sidebar.Header>
 	<Sidebar.Content>
-		<NavMain items={data.navMain} />
+		<NavMain items={navigationData.navMain} />
 		<Sidebar.Separator />
 		<Sidebar.Group>
 			<Sidebar.GroupLabel>Knowledge</Sidebar.GroupLabel>
@@ -239,11 +255,13 @@
 				</Sidebar.MenuItem>
 			</Sidebar.Menu>
 		</Sidebar.Group>
-		<NavProjects projects={data.projects} />
-		<NavSecondary items={data.navSecondary} class="mt-auto" />
+		<NavProjects projects={navigationData.projects} />
+		<NavSecondary items={navigationData.navSecondary} class="mt-auto" />
 	</Sidebar.Content>
 	<Sidebar.Footer>
-		<NavUser {session} />
+		{#if session?.user}
+			<NavUser session={{ user: session.user }} />
+		{/if}
 	</Sidebar.Footer>
 </Sidebar.Root>
 

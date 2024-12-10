@@ -1,8 +1,6 @@
 import { integer, pgTable, timestamp, unique, uuid, varchar } from "drizzle-orm/pg-core"
 import { staff } from "./staff";
-import { student } from "./student";
-import { seed } from "drizzle-seed";
-import { drizzle } from 'drizzle-orm/postgres-js';
+import { resident } from "./student";
 import { sql } from "drizzle-orm";
 
 export const grade = pgTable('grade', {
@@ -11,7 +9,7 @@ export const grade = pgTable('grade', {
     grade_result_total: integer('grade_result_total'),
     grade_result_value: integer('grade_result_value'),
     grade_feedback: uuid('grade_feedback').references(() => grade_feedback.sys_id),
-    grade_student_id: uuid('grade_student_id').references(() => student.sys_id),
+    grade_student_id: uuid('grade_student_id').references(() => resident.sys_id),
     grade_by_instructor_id: uuid('grade_by_instructor_id').references(() => staff.sys_id)
   });
 
@@ -28,8 +26,3 @@ export const grade_feedback = pgTable('grade_feedback', {
     grade_feedback_updated_by: uuid('grade_feedback_updated_by').references(() => staff.sys_id)
   });
 
-// async function main() {
-//   const db = drizzle(process.env.DATABASE_URL!);
-//   await seed(db, { grade_feedback, grade });
-// }
-// main();   

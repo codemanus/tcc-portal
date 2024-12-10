@@ -1,8 +1,6 @@
 import { pgTable, uuid, varchar, timestamp, pgSchema, text, foreignKey, pgPolicy } from "drizzle-orm/pg-core"
 import { authenticatedRole, authUsers } from "drizzle-orm/supabase";
 import { sql } from "drizzle-orm";
-import { seed } from "drizzle-seed";
-import { drizzle } from 'drizzle-orm/postgres-js';
 import { user_role } from "./user-roles";
 
 
@@ -34,8 +32,3 @@ export const users = pgTable('users', {
 ]
 );
 
-// async function main() {
-//   const db = drizzle(process.env.DATABASE_URL!);
-//   await seed(db, { users });
-// }
-// main();

@@ -4,7 +4,6 @@
 	import { Separator } from '$lib/components/ui/separator/index.js';
 	import * as Breadcrumb from '$lib/components/ui/breadcrumb/index.js';
 	import { breadcrumbs } from '$lib/stores/breadcrumb';
-	import { invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
 
 	let { children } = $props();
@@ -15,13 +14,10 @@
 			window.location.href = '/';
 		}
 	});
-
-	// Get session from page store
-	const session = $derived($page.data.session);
 </script>
 
 <Sidebar.Provider>
-	<AppSidebar {session} />
+	<AppSidebar session={$page.data} />
 	<Sidebar.Inset>
 		<header class="flex h-16 shrink-0 items-center gap-2 border-b px-4">
 			<Sidebar.Trigger class="-ml-1" />

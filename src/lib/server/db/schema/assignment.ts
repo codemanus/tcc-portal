@@ -1,9 +1,7 @@
 import { pgTable, uuid, varchar, timestamp } from "drizzle-orm/pg-core"
-import { student } from "./student";
+import { resident } from "./student";
 import { grade } from "./grade";
 import { staff } from "./staff";
-import { seed } from "drizzle-seed";
-import { drizzle } from 'drizzle-orm/postgres-js';
 import { sql } from "drizzle-orm";
 
 export const assignment = pgTable('assignment', {
@@ -15,7 +13,7 @@ export const assignment = pgTable('assignment', {
     assignment_grade_id: uuid('assignment_grade_id').references(() => grade.sys_id),
     assignment_created_at: timestamp('assignment_created_at').defaultNow(),
     assignment_updated_at: timestamp('assignment_updated_at').defaultNow(),
-    assignment_submitted_by: uuid('assignment_submitted_by').references(() => student.sys_id),
+    assignment_submitted_by: uuid('assignment_submitted_by').references(() => resident.sys_id),
     assignment_submitted_at: timestamp('assignment_submitted_at').defaultNow(),
     assignment_created_by: uuid('assignment_created_by'),
     assignment_updated_by: uuid('assignment_updated_by').references(() => staff.sys_id)
@@ -30,9 +28,3 @@ export const assignment = pgTable('assignment', {
     assignment_type_created_by: uuid('assignment_type_created_by'),
     assignment_type_updated_by: uuid('assignment_type_updated_by').references(() => staff.sys_id)
   });
-
-// async function main() {
-//   const db = drizzle(process.env.DATABASE_URL!);
-//   await seed(db, { assignment_type, assignment });
-// }
-// main();

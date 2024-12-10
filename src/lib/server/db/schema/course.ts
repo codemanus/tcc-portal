@@ -1,8 +1,6 @@
 import { pgTable, uuid, varchar, boolean, integer, timestamp } from "drizzle-orm/pg-core"
 import { staff } from "./staff";
 import { assignment } from "./assignment";
-import { seed } from "drizzle-seed";
-import { drizzle } from 'drizzle-orm/postgres-js';
 import { sql } from "drizzle-orm";
 
 export const course = pgTable('course', {
@@ -34,9 +32,3 @@ export const course_schedule = pgTable('course_schedule', {
     course_created_by: uuid('course_created_by'),
     course_updated_by: uuid('course_updated_by').references(() => staff.sys_id)
   });
-
-// async function main() {
-//   const db = drizzle(process.env.DATABASE_URL!);
-//   await seed(db, { course_schedule, course });
-// }
-// main();

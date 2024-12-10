@@ -40,7 +40,11 @@
 
 		<Card>
 			<CardHeader>
-				<GradeHeader grade={data.grade} />
+				{#if data.grade}
+					<GradeHeader grade={data.grade} />
+				{:else}
+					<p>No grade available</p>
+				{/if}
 			</CardHeader>
 			<CardContent class="space-y-6 bg-muted/50 shadow-md">
 				<div class="space-y-4">

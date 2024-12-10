@@ -1,7 +1,6 @@
 import { pgTable, varchar, uuid, timestamp } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
-import { seed } from "drizzle-seed";
-import { drizzle } from 'drizzle-orm/postgres-js';
+
 
 export const user_role = pgTable('user_role', {
     role_id: uuid('role_id').primaryKey().unique().notNull().default(sql`uuid_generate_v4()`),
@@ -14,8 +13,13 @@ export const user_role = pgTable('user_role', {
     role_created_by: uuid('role_created_by'),
 });
 
-// async function main() {
-//   const db = drizzle(process.env.DATABASE_URL!);
-//   await seed(db, { user_role });
-// }
-// main();
+export const role_permissions = pgTable('role_permissions', {
+    role_id: uuid('role_id').references(() => user_role.role_id),
+    permission_id: uuid('permission_id').references(() => permissions.permission_id),
+});
+
+export const permissions = pgTable('permissions', {
+    permission_id: uuid('permission_id').primaryKey().unique().notNull().default(sql`uuid_generate_v4()`),
+    permission_name: varchar('permission_name').unique(),
+    permission_description: varchar('permission_description'),
+});

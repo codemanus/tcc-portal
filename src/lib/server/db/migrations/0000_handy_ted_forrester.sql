@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS "assignment" (
-	"sys_id" uuid PRIMARY KEY NOT NULL,
+	"sys_id" uuid PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
 	"assignment_name" varchar(255) NOT NULL,
 	"assignment_desc" varchar(255) NOT NULL,
 	"assignment_type" uuid,
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS "assignment" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "assignment_type" (
-	"sys_id" uuid PRIMARY KEY NOT NULL,
+	"sys_id" uuid PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
 	"assignment_type_name" varchar(255) NOT NULL,
 	"assignment_type_desc" varchar NOT NULL,
 	"assignment_type_created_at" timestamp DEFAULT now(),
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS "assignment_type" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "course" (
-	"sys_id" uuid PRIMARY KEY NOT NULL,
+	"sys_id" uuid PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
 	"course_name" varchar(255) NOT NULL,
 	"course_code" varchar(255) NOT NULL,
 	"course_credit" integer NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS "course" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "course_schedule" (
-	"sys_id" uuid PRIMARY KEY NOT NULL,
+	"sys_id" uuid PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
 	"course_code" varchar(255),
 	"course_offered_fall" boolean DEFAULT false,
 	"course_offered_spring" boolean DEFAULT false,
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS "course_schedule" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "enrollment" (
-	"sys_id" uuid PRIMARY KEY NOT NULL,
+	"sys_id" uuid PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
 	"enrollment_schoolyear" varchar(255) NOT NULL,
 	"enrollment_courses" varchar(255) NOT NULL,
 	"enrollment_is_active" boolean DEFAULT true,
@@ -69,14 +69,14 @@ CREATE TABLE IF NOT EXISTS "enrollment" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "enrollment_course" (
-	"sys_id" uuid PRIMARY KEY NOT NULL,
+	"sys_id" uuid PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
 	"course_id" uuid NOT NULL,
 	"enrollment_id" uuid NOT NULL,
 	CONSTRAINT "enrollment_course_sys_id_unique" UNIQUE("sys_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "grade" (
-	"sys_id" uuid PRIMARY KEY NOT NULL,
+	"sys_id" uuid PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
 	"grade_assignment_id" uuid,
 	"grade_result_total" integer,
 	"grade_result_value" integer,
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS "grade" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "grade_feedback" (
-	"sys_id" uuid PRIMARY KEY NOT NULL,
+	"sys_id" uuid PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
 	"grade_feedback_strengths" varchar,
 	"grade_feedback_improvements" varchar,
 	"grade_feedback_comments" varchar,
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS "grade_feedback" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "staff" (
-	"sys_id" uuid PRIMARY KEY NOT NULL,
+	"sys_id" uuid PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
 	"stff_number" serial NOT NULL,
 	"staff_email" varchar NOT NULL,
 	"staff_password" varchar NOT NULL,
@@ -124,39 +124,54 @@ CREATE TABLE IF NOT EXISTS "staff" (
 	CONSTRAINT "staff_staff_email_unique" UNIQUE("staff_email")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "student" (
-	"sys_id" uuid PRIMARY KEY NOT NULL,
-	"student_number" serial NOT NULL,
-	"student_email" varchar NOT NULL,
-	"student_password" varchar NOT NULL,
-	"student_first_name" varchar NOT NULL,
-	"student_last_name" varchar NOT NULL,
-	"student_dateOfBirth" date NOT NULL,
-	"student_sex" varchar NOT NULL,
-	"student_address_1" varchar NOT NULL,
-	"student_address_2" varchar,
-	"student_address_city" varchar NOT NULL,
-	"student_address_zip" varchar NOT NULL,
-	"student_primary_phone" varchar NOT NULL,
-	"student_created_at" timestamp (6) with time zone DEFAULT now() NOT NULL,
-	"student_updated_at" timestamp (6) with time zone DEFAULT now() NOT NULL,
-	"student_created_by" uuid NOT NULL,
-	"student_updated_by" uuid NOT NULL,
-	CONSTRAINT "student_sys_id_unique" UNIQUE("sys_id"),
-	CONSTRAINT "student_student_email_unique" UNIQUE("student_email"),
-	CONSTRAINT "student_student_password_unique" UNIQUE("student_password")
+CREATE TABLE IF NOT EXISTS "resident" (
+	"sys_id" uuid PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
+	"resident_number" serial NOT NULL,
+	"resident_email" varchar NOT NULL,
+	"resident_password" varchar NOT NULL,
+	"resident_first_name" varchar NOT NULL,
+	"resident_last_name" varchar NOT NULL,
+	"resident_dateOfBirth" date NOT NULL,
+	"resident_sex" varchar NOT NULL,
+	"resident_address_1" varchar NOT NULL,
+	"resident_address_2" varchar,
+	"resident_address_city" varchar NOT NULL,
+	"resident_address_zip" varchar NOT NULL,
+	"resident_primary_phone" varchar NOT NULL,
+	"resident_created_at" timestamp (6) with time zone DEFAULT now() NOT NULL,
+	"resident_updated_at" timestamp (6) with time zone DEFAULT now() NOT NULL,
+	"resident_created_by" uuid,
+	"resident_updated_by" uuid,
+	CONSTRAINT "resident_sys_id_unique" UNIQUE("sys_id"),
+	CONSTRAINT "resident_resident_email_unique" UNIQUE("resident_email"),
+	CONSTRAINT "resident_resident_password_unique" UNIQUE("resident_password")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "permissions" (
+	"permission_id" uuid PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
+	"permission_name" varchar,
+	"permission_description" varchar,
+	CONSTRAINT "permissions_permission_id_unique" UNIQUE("permission_id"),
+	CONSTRAINT "permissions_permission_name_unique" UNIQUE("permission_name")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "role_permissions" (
+	"role_id" uuid,
+	"permission_id" uuid
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user_role" (
-	"role_id" uuid PRIMARY KEY NOT NULL,
+	"role_id" uuid PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
 	"role_name" varchar,
+	"role_value" varchar,
 	"role_description" varchar,
 	"role_created_at" timestamp (6) with time zone DEFAULT now() NOT NULL,
 	"role_updated_at" timestamp (6) with time zone DEFAULT now() NOT NULL,
 	"role_updated_by" uuid,
 	"role_created_by" uuid,
 	CONSTRAINT "user_role_role_id_unique" UNIQUE("role_id"),
-	CONSTRAINT "user_role_role_name_unique" UNIQUE("role_name")
+	CONSTRAINT "user_role_role_name_unique" UNIQUE("role_name"),
+	CONSTRAINT "user_role_role_value_unique" UNIQUE("role_value")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users" (
@@ -165,6 +180,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"username" varchar NOT NULL,
 	"profile_image" varchar,
 	"role" text,
+	"user_role" uuid,
 	"created_at" timestamp (6) with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp (6) with time zone,
 	CONSTRAINT "users_id_unique" UNIQUE("id")
@@ -184,7 +200,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "assignment" ADD CONSTRAINT "assignment_assignment_submitted_by_student_sys_id_fk" FOREIGN KEY ("assignment_submitted_by") REFERENCES "public"."student"("sys_id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "assignment" ADD CONSTRAINT "assignment_assignment_submitted_by_resident_sys_id_fk" FOREIGN KEY ("assignment_submitted_by") REFERENCES "public"."resident"("sys_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -232,7 +248,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "enrollment" ADD CONSTRAINT "enrollment_enrollment_update_by_student_sys_id_fk" FOREIGN KEY ("enrollment_update_by") REFERENCES "public"."student"("sys_id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "enrollment" ADD CONSTRAINT "enrollment_enrollment_update_by_resident_sys_id_fk" FOREIGN KEY ("enrollment_update_by") REFERENCES "public"."resident"("sys_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -256,7 +272,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "grade" ADD CONSTRAINT "grade_grade_student_id_student_sys_id_fk" FOREIGN KEY ("grade_student_id") REFERENCES "public"."student"("sys_id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "grade" ADD CONSTRAINT "grade_grade_student_id_resident_sys_id_fk" FOREIGN KEY ("grade_student_id") REFERENCES "public"."resident"("sys_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -280,7 +296,31 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "staff" ADD CONSTRAINT "staff_sys_id_users_id_fk" FOREIGN KEY ("sys_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "staff" ADD CONSTRAINT "staff_staff_role_id_user_role_role_id_fk" FOREIGN KEY ("staff_role_id") REFERENCES "public"."user_role"("role_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "resident" ADD CONSTRAINT "resident_sys_id_users_id_fk" FOREIGN KEY ("sys_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "role_permissions" ADD CONSTRAINT "role_permissions_role_id_user_role_role_id_fk" FOREIGN KEY ("role_id") REFERENCES "public"."user_role"("role_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "role_permissions" ADD CONSTRAINT "role_permissions_permission_id_permissions_permission_id_fk" FOREIGN KEY ("permission_id") REFERENCES "public"."permissions"("permission_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -292,9 +332,15 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "users" ADD CONSTRAINT "users_user_role_user_role_role_id_fk" FOREIGN KEY ("user_role") REFERENCES "public"."user_role"("role_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "users" ADD CONSTRAINT "users_id_fkey" FOREIGN KEY ("id") REFERENCES "auth"."users"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
-CREATE POLICY "authenticated can view all users" ON "users" AS PERMISSIVE FOR SELECT TO "authenticated" USING (true);
+-- CREATE POLICY "authenticated can view all users" ON "users" AS PERMISSIVE FOR SELECT TO "authenticated" USING (true);
